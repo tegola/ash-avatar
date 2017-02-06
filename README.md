@@ -7,6 +7,6 @@ Material design: [Imagery](https://material.io/guidelines/style/imagery.html)
 Example:
 
     <ash-avatar name="Jennifer Smith"></ash-avatar>
-    <ash-avatar src="http://placehold.it/200"></ash-avatar>
+    <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
     <ash-avatar icon="social:person"></ash-avatar>
     <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
