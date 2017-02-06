@@ -10,6 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
     <link rel="import" href="../../iron-icons/social-icons.html">
     <link rel="import" href="../../paper-styles/color.html">
     <link rel="import" href="../ash-avatar.html">
@@ -23,7 +24,7 @@
       <demo-snippet>
         <template>
           <ash-avatar name="Jennifer Smith"></ash-avatar>
-          <ash-avatar src="http://placehold.it/200"></ash-avatar>
+          <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
           <ash-avatar icon="social:person"></ash-avatar>
         </template>
       </demo-snippet>
@@ -31,7 +32,7 @@
       <h3>Image and icon have priority over initials</h3>
       <demo-snippet>
         <template>
-          <ash-avatar name="Jennifer Smith" src="http://placehold.it/200"></ash-avatar>
+          <ash-avatar name="Jennifer Smith" src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
           <ash-avatar name="Jennifer Smith" icon="social:person"></ash-avatar>
         </template>
       </demo-snippet>
@@ -48,12 +49,13 @@
       <h3>Avatars can be fully customized</h3>
       <demo-snippet>
         <template>
-          <ash-avatar class="big" src="http://placehold.it/200"></ash-avatar>
-          <ash-avatar class="big" icon="social:person"></ash-avatar>
-          <ash-avatar class="big" name="Jennifer Smith" icon="social:person"></ash-avatar><br>
+          <ash-avatar class="big" src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
+          <ash-avatar class="big" icon="cloud-upload"></ash-avatar>
+          <ash-avatar class="big" name="Jennifer Smith"></ash-avatar><br>
 
           <ash-avatar class="bw" icon="social:person"></ash-avatar>
           <ash-avatar class="fancy" name="Jennifer Smith"></ash-avatar>
+          <ash-avatar class="square" name="Jennifer Smith"></ash-avatar>
 
           <style is="custom-style">
             ash-avatar.big {
@@ -76,6 +78,9 @@
               --ash-avatar-inner-border: {
                 border: 2px dotted var(--paper-indigo-500);
               };
+            }
+            ash-avatar.square {
+              --ash-avatar-border-radius: 3px;
             }
           </style>
         </template>

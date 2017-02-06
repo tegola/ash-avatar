@@ -15,7 +15,7 @@ It is not meant to be clicked, therefore there isn't any support for the ripple 
 Example:
 
     <ash-avatar name="Jennifer Smith"></ash-avatar>
-    <ash-avatar src="http://placehold.it/200"></ash-avatar>
+    <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
     <ash-avatar icon="social:person"></ash-avatar>
     <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
 
@@ -44,6 +44,7 @@ Custom property | Description | Default
 `--ash-avatar-color` | Content (text and icon) color | `#F5F5F5`
 `--ash-avatar-width` | Avatar width | `40px`
 `--ash-avatar-height` | Avatar height | `40px`
+`--ash-avatar-border-radius` | Avatar and inner border radius | `50%`
 `--ash-avatar` | Mixin applied to the avatar | `{}`
 `--ash-avatar-text-color` | Specific text color (to differentiate from the default color) | `--ash-avatar-color`
 `--ash-avatar-text-size` | | 20px);
@@ -63,11 +64,11 @@ Custom property | Description | Default
 
 <dom-module id="ash-avatar">
   <template>
-    <style include="iron-flex">
+    <style is="custom-style">
       :host {
         width: var(--ash-avatar-width, 40px);
         height: var(--ash-avatar-height, 40px);
-        border-radius: 50%;
+        border-radius: var(--ash-avatar-border-radius, 50%);
         background-color: var(--ash-avatar-background, #757575);
         color: var(--ash-avatar-color, #F5F5F5);
         overflow: hidden;
@@ -81,7 +82,7 @@ Custom property | Description | Default
       :host::after {
         @apply(--layout-fit);
         content: '';
-        border-radius: 50%;
+        border-radius: var(--ash-avatar-border-radius, 50%);
         border: 1px solid var(--ash-avatar-inner-border-color, rgba(0, 0, 0, 0.08));
         pointer-events: none;
 
@@ -116,9 +117,9 @@ Custom property | Description | Default
       }
     </style>
 
-    <div id="text" hidden$="{{!_shouldShow('text')}}">{{_computedInitials}}</div>
-    <iron-icon id="icon" icon="[[icon]]" hidden$="{{!_shouldShow('icon')}}"></iron-icon>
-    <iron-image id="img" src="[[src]]" sizing="cover" hidden$="{{!_shouldShow('image')}}"></iron-image>
+    <div id="text" hidden$="[[!_shouldShow('text', name, icon, src)]]">[[_computedInitials]]</div>
+    <iron-icon id="icon" icon="[[icon]]" hidden$="[[!_shouldShow('icon', name, icon, src)]]"></iron-icon>
+    <iron-image id="img" src="[[src]]" sizing="cover" hidden$="[[!_shouldShow('image', name, icon, src)]]"></iron-image>
   </template>
 
   <script>
@@ -132,7 +133,7 @@ Custom property | Description | Default
          */
         name: {
           type: String,
-          value: '',
+          value: null,
           observer: '_nameChanged'
         },
 
@@ -148,12 +149,18 @@ Custom property | Description | Default
         /**
          * An custom icon to show when there is no image set
          */
-        icon: String,
+        icon: {
+          type: String,
+          value: null
+        },
 
         /**
          * The image to show as the avatar
          */
-        src: String,
+        src: {
+          type: String,
+          value: null
+        },
 
         _computedInitials: {
           type: String,
@@ -173,19 +180,21 @@ Custom property | Description | Default
       },
 
       _nameChanged: function(name) {
-        this.title = name;
+        if (name) {
+          this.title = name
+        } else {
+          this.removeAttribute('title');
+        }
       },
 
-      _shouldShow: function(obj) {
-        // console.log('icon', this.icon);
-        // console.log('src', this.src);
+      _shouldShow: function(obj, name, icon, src) {
         switch(obj) {
           case 'text':
-            return true; // (this.src === undefined || this.icon !== undefined);
+            return name && !icon && !src ? true : false;
           case 'icon':
-            return false; // (this.icon !== undefined && this.src === undefined);
+            return icon && !src ? true : false;
           case 'image':
-            return false; // this.src !== undefined;
+            return src ? true : false;
         }
       }
     });
