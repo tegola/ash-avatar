@@ -1,0 +1,202 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-image/iron-image.html">
+
+<!--
+Material design: [Imagery](https://material.io/guidelines/style/imagery.html)
+
+`ash-avatar` is an avatar element with fallbacks for an icon and the user initials. Shows an avatar,
+an icon, or just the user initials, (given that the user name is set). Initials can also
+be passed separately.
+
+It is not meant to be clicked, therefore there isn't any support for the ripple effect.
+
+Example:
+
+    <ash-avatar name="Jennifer Smith"></ash-avatar>
+    <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
+    <ash-avatar icon="social:person"></ash-avatar>
+    <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
+
+### Styling
+
+Using custom properties and mixins is the recommended method. Here are a few examples:
+
+    ash-avatar.big {
+      --ash-avatar-width: 60px;
+      --ash-avatar-height: 60px;
+      --ash-avatar-icon-width: 36px;
+      --ash-avatar-icon-height: 36px;
+      --ash-avatar-text-size: 30px;
+    }
+    ash-avatar.bw {
+      --ash-avatar-background: white;
+      --ash-avatar-color: black;
+      --ash-avatar-inner-border: {
+        border: 2px solid black
+      }
+    }
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--ash-avatar-background` | Background color of the avatar | `#757575`
+`--ash-avatar-color` | Content (text and icon) color | `#F5F5F5`
+`--ash-avatar-width` | Avatar width | `40px`
+`--ash-avatar-height` | Avatar height | `40px`
+`--ash-avatar-border-radius` | Avatar and inner border radius | `50%`
+`--ash-avatar` | Mixin applied to the avatar | `{}`
+`--ash-avatar-text-color` | Specific text color (to differentiate from the default color) | `--ash-avatar-color`
+`--ash-avatar-text-size` | | 20px);
+`--ash-avatar-text` | Mixin applied to the avatar text | `{}`
+`--ash-avatar-image-width` | Avatar image width | `100%`
+`--ash-avatar-image-height` | Avatar image height | `100%`
+`--ash-avatar-image` | Mixin applied to the avatar image | `{}`
+`--ash-avatar-icon-width` | Avatar icon width | `24px`
+`--ash-avatar-icon-height` | Avatar icon height | `24px`
+`--ash-avatar-icon-color` | Specific icon color (to differentiate from the default color) | `--ash-avatar-color`
+`--ash-avatar-icon` | Mixin applied to the avatar icon | `{}`
+`--ash-avatar-inner-border-color`| Color of the inner border | `rgba(0, 0, 0, 0.08)`
+`--ash-avatar-inner-border` | Mixin applied to the avatar inner border | `{}`
+
+@demo demo/index.html 
+-->
+
+<dom-module id="ash-avatar">
+  <template>
+    <style is="custom-style">
+      :host {
+        width: var(--ash-avatar-width, 40px);
+        height: var(--ash-avatar-height, 40px);
+        border-radius: var(--ash-avatar-border-radius, 50%);
+        background-color: var(--ash-avatar-background, #757575);
+        color: var(--ash-avatar-color, #F5F5F5);
+        overflow: hidden;
+        vertical-align: middle;
+        @apply(--layout-inline);
+        @apply(--layout-center-center);
+        @apply(--layout-relative);
+
+        @apply(--ash-avatar);
+      }
+      :host::after {
+        @apply(--layout-fit);
+        content: '';
+        border-radius: var(--ash-avatar-border-radius, 50%);
+        border: 1px solid var(--ash-avatar-inner-border-color, rgba(0, 0, 0, 0.08));
+        pointer-events: none;
+
+        @apply(--ash-avatar-inner-border);
+      }
+      #text {
+        @apply(--paper-font-common-base);
+        text-transform: uppercase;
+        font-size: var(--ash-avatar-text-size, 20px);
+        color: var(--ash-avatar-text-color, var(--ash-avatar-color));
+        user-select: none;
+
+        @apply(--ash-avatar-text);
+      }
+      iron-icon {
+        width: var(--ash-avatar-icon-width, 24px);
+        height: var(--ash-avatar-icon-height, 24px);
+        color: var(--ash-avatar-icon-color, var(--ash-avatar-color));
+
+        @apply(--ash-avatar-icon);
+      }
+      iron-image {
+        width: var(--ash-avatar-image-width, 100%);
+        height: var(--ash-avatar-image-height, 100%);
+
+        @apply(--ash-avatar-image)
+      }
+
+      /* IE 10 support for HTML5 hidden attr */
+      [hidden] {
+        display: none;
+      }
+    </style>
+
+    <div id="text" hidden$="[[!_shouldShow('text', name, icon, src)]]">[[_computedInitials]]</div>
+    <iron-icon id="icon" icon="[[icon]]" hidden$="[[!_shouldShow('icon', name, icon, src)]]"></iron-icon>
+    <iron-image id="img" src="[[src]]" sizing="cover" hidden$="[[!_shouldShow('image', name, icon, src)]]"></iron-image>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'ash-avatar',
+
+      properties: {
+        /**
+         * User name - will be always used for the element title, and for showing the
+         * initials, unless the `initials` property (below) is set
+         */
+        name: {
+          type: String,
+          value: null,
+          observer: '_nameChanged'
+        },
+
+        /**
+         * The initials shown when no image or icon is set. If not set, it is
+         * automatically built upon the name property (above)
+         */
+        initials: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * An custom icon to show when there is no image set
+         */
+        icon: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * The image to show as the avatar
+         */
+        src: {
+          type: String,
+          value: null
+        },
+
+        _computedInitials: {
+          type: String,
+          value: '',
+          computed: '_computeInitials(name, initials)'
+        }
+      },
+
+      _computeInitials: function(name, initials) {
+        if (initials) {
+          return initials;
+        }
+        if (name) {
+          var words = name.split(' ');
+          return [words[0][0], words[1] ? words[1][0] : ''].join('');
+        }
+      },
+
+      _nameChanged: function(name) {
+        if (name) {
+          this.title = name
+        } else {
+          this.removeAttribute('title');
+        }
+      },
+
+      _shouldShow: function(obj, name, icon, src) {
+        switch(obj) {
+          case 'text':
+            return name && !icon && !src ? true : false;
+          case 'icon':
+            return icon && !src ? true : false;
+          case 'image':
+            return src ? true : false;
+        }
+      }
+    });
+  </script>
+</dom-module>

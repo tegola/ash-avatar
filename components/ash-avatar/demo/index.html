@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>ash-avatar demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../iron-icons/social-icons.html">
+    <link rel="import" href="../../paper-styles/color.html">
+    <link rel="import" href="../ash-avatar.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Avatars can be used with just the name, with an image or an icon</h3>
+      <demo-snippet>
+        <template>
+          <ash-avatar name="Jennifer Smith"></ash-avatar>
+          <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
+          <ash-avatar icon="social:person"></ash-avatar>
+        </template>
+      </demo-snippet>
+
+      <h3>Image and icon have priority over initials</h3>
+      <demo-snippet>
+        <template>
+          <ash-avatar name="Jennifer Smith" src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
+          <ash-avatar name="Jennifer Smith" icon="social:person"></ash-avatar>
+        </template>
+      </demo-snippet>
+
+      <h3>Initials can be overridden</h3>
+      <demo-snippet>
+        <template>
+          <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
+          <ash-avatar name="Jennifer Smith" initials="SJ"></ash-avatar>
+          <ash-avatar name="Jennifer Smith" initials="JEN"></ash-avatar>
+        </template>
+      </demo-snippet>
+
+      <h3>Avatars can be fully customized</h3>
+      <demo-snippet>
+        <template>
+          <ash-avatar class="big" src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
+          <ash-avatar class="big" icon="cloud-upload"></ash-avatar>
+          <ash-avatar class="big" name="Jennifer Smith"></ash-avatar><br>
+
+          <ash-avatar class="bw" icon="social:person"></ash-avatar>
+          <ash-avatar class="fancy" name="Jennifer Smith"></ash-avatar>
+          <ash-avatar class="square" name="Jennifer Smith"></ash-avatar>
+
+          <style is="custom-style">
+            ash-avatar.big {
+              --ash-avatar-width: 60px;
+              --ash-avatar-height: 60px;
+              --ash-avatar-icon-width: 36px;
+              --ash-avatar-icon-height: 36px;
+              --ash-avatar-text-size: 30px;
+            }
+            ash-avatar.bw {
+              --ash-avatar-background: white;
+              --ash-avatar-color: black;
+              --ash-avatar-inner-border: {
+                border: 2px solid black
+              }
+            }
+            ash-avatar.fancy {
+              --ash-avatar-background: var(--paper-lime-a200);
+              --ash-avatar-color: var(--paper-indigo-500);
+              --ash-avatar-inner-border: {
+                border: 2px dotted var(--paper-indigo-500);
+              };
+            }
+            ash-avatar.square {
+              --ash-avatar-border-radius: 3px;
+            }
+          </style>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
