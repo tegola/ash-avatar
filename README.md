@@ -10,3 +10,5 @@ Example:
     <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
     <ash-avatar icon="social:person"></ash-avatar>
     <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
+
+[Demo page](https://tegola.github.io/ash-avatar/components/ash-avatar/)
