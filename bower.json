@@ -1,7 +1,21 @@
 {
   "name": "ash-avatar",
   "description": "An avatar element with fallbacks for an icon and the user initials.",
+  "authors": [
+    "Alan Sprecacenere <alan@qreate.it>"
+  ],
   "main": "ash-avatar.html",
+  "keywords": [
+    "avatar",
+    "paper-avatar",
+    "ash-avatar",
+    "gravatar"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tegola/ash-avatar.git"
+  },
+  "homepage": "https://github.com/tegola/ash-avatar",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "iron-image": "^1.2.5",
