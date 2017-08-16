@@ -110,16 +110,17 @@ Custom property | Description | Default
 
         @apply(--ash-avatar-image)
       }
-
-      /* IE 10 support for HTML5 hidden attr */
-      [hidden] {
-        display: none;
-      }
     </style>
 
-    <div id="text" hidden$="[[!_shouldShow('text', name, icon, src)]]">[[_computedInitials]]</div>
-    <iron-icon id="icon" icon="[[icon]]" hidden$="[[!_shouldShow('icon', name, icon, src)]]"></iron-icon>
-    <iron-image id="img" src="[[src]]" sizing="cover" hidden$="[[!_shouldShow('image', name, icon, src)]]"></iron-image>
+    <template is="dom-if" if="[[_shouldShow('text', name, icon, src)]]">
+      <div id="text">[[_computedInitials]]</div>
+    </template>
+    <template is="dom-if" if="[[_shouldShow('icon', name, icon, src)]]">
+      <iron-icon id="icon" icon="[[icon]]"></iron-icon>
+    </template>
+    <template is="dom-if" if="[[_shouldShow('image', name, icon, src)]]">
+      <iron-image id="img" src="[[src]]" sizing="cover"></iron-image>
+    </template>
   </template>
 
   <script>
