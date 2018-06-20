@@ -6,25 +6,47 @@
 
     <title>ash-avatar test</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
     <link rel="import" href="../ash-avatar.html">
   </head>
   <body>
-    <test-fixture id="basic">
+
+    <test-fixture id="BasicTestFixture">
       <template>
         <ash-avatar></ash-avatar>
       </template>
     </test-fixture>
 
+    <test-fixture id="ChangedPropertyTestFixture">
+      <template>
+        <ash-avatar prop1="new-prop1"></ash-avatar>
+      </template>
+    </test-fixture>
+
     <script>
-      suite('ash-avatar', function() {
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'ash-avatar');
+      suite('ash-avatar', () => {
+
+        test('instantiating the element with default properties works', () => {
+          const element = fixture('BasicTestFixture');
+          assert.equal(element.prop1, 'ash-avatar');
+          const elementShadowRoot = element.shadowRoot;
+          const elementHeader = elementShadowRoot.querySelector('h2');
+          assert.equal(elementHeader.innerHTML, 'Hello ash-avatar!');
         });
+
+        test('setting a property on the element works', () => {
+          // Create a test fixture
+          const element = fixture('ChangedPropertyTestFixture');
+          assert.equal(element.prop1, 'new-prop1');
+          const elementShadowRoot = element.shadowRoot;
+          const elementHeader = elementShadowRoot.querySelector('h2');
+          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        });
+
       });
     </script>
+
   </body>
 </html>

@@ -1,6 +1,6 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-styles/typography.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-image/iron-image.html">
 
 <!--
@@ -64,53 +64,52 @@ Custom property | Description | Default
 
 <dom-module id="ash-avatar">
   <template>
-    <style is="custom-style">
-      :host {
-        width: var(--ash-avatar-width, 40px);
-        height: var(--ash-avatar-height, 40px);
-        border-radius: var(--ash-avatar-border-radius, 50%);
-        background-color: var(--ash-avatar-background, #757575);
-        color: var(--ash-avatar-color, #F5F5F5);
-        overflow: hidden;
-        vertical-align: middle;
-        @apply(--layout-inline);
-        @apply(--layout-center-center);
-        @apply(--layout-relative);
+      <style>
+        :host {
+          width: var(--ash-avatar-width, 40px);
+          height: var(--ash-avatar-height, 40px);
+          border-radius: var(--ash-avatar-border-radius, 50%);
+          background-color: var(--ash-avatar-background, #757575);
+          color: var(--ash-avatar-color, #F5F5F5);
+          overflow: hidden;
+          vertical-align: middle;
+          @apply --layout-inline;
+          @apply --layout-center-center;
+          @apply --layout-relative;
+          @apply --ash-avatar;
+        }
 
-        @apply(--ash-avatar);
-      }
-      :host::after {
-        @apply(--layout-fit);
-        content: '';
-        border-radius: var(--ash-avatar-border-radius, 50%);
-        border: 1px solid var(--ash-avatar-inner-border-color, rgba(0, 0, 0, 0.08));
-        pointer-events: none;
+        :host::after {
+          @apply --layout-fit;
+          content: '';
+          border-radius: var(--ash-avatar-border-radius, 50%);
+          border: 1px solid var(--ash-avatar-inner-border-color, rgba(0, 0, 0, 0.08));
+          pointer-events: none;
+          @apply --ash-avatar-inner-border;
+        }
 
-        @apply(--ash-avatar-inner-border);
-      }
-      #text {
-        @apply(--paper-font-common-base);
-        text-transform: uppercase;
-        font-size: var(--ash-avatar-text-size, 20px);
-        color: var(--ash-avatar-text-color, var(--ash-avatar-color));
-        user-select: none;
+        #text {
+          @apply --paper-font-common-base;
+          text-transform: uppercase;
+          font-size: var(--ash-avatar-text-size, 20px);
+          color: var(--ash-avatar-text-color, var(--ash-avatar-color));
+          user-select: none;
+          @apply --ash-avatar-text;
+        }
 
-        @apply(--ash-avatar-text);
-      }
-      iron-icon {
-        width: var(--ash-avatar-icon-width, 24px);
-        height: var(--ash-avatar-icon-height, 24px);
-        color: var(--ash-avatar-icon-color, var(--ash-avatar-color));
+        iron-icon {
+          width: var(--ash-avatar-icon-width, 24px);
+          height: var(--ash-avatar-icon-height, 24px);
+          color: var(--ash-avatar-icon-color, var(--ash-avatar-color));
+          @apply --ash-avatar-icon;
+        }
 
-        @apply(--ash-avatar-icon);
-      }
-      iron-image {
-        width: var(--ash-avatar-image-width, 100%);
-        height: var(--ash-avatar-image-height, 100%);
-
-        @apply(--ash-avatar-image)
-      }
-    </style>
+        iron-image {
+          width: var(--ash-avatar-image-width, 100%);
+          height: var(--ash-avatar-image-height, 100%);
+          @apply --ash-avatar-image;
+        }
+      </style>
 
     <template is="dom-if" if="[[_shouldShow('text', name, icon, src)]]">
       <div id="text">[[_computedInitials]]</div>
@@ -124,72 +123,57 @@ Custom property | Description | Default
   </template>
 
   <script>
-    Polymer({
-      is: 'ash-avatar',
-
-      properties: {
-        /**
-         * User name - will be always used for the element title, and for showing the
-         * initials, unless the `initials` property (below) is set
-         */
-        name: {
-          type: String,
-          value: null,
-          observer: '_nameChanged'
-        },
-
-        /**
-         * The initials shown when no image or icon is set. If not set, it is
-         * automatically built upon the name property (above)
-         */
-        initials: {
-          type: String,
-          value: ''
-        },
-
-        /**
-         * An custom icon to show when there is no image set
-         */
-        icon: {
-          type: String,
-          value: null
-        },
-
-        /**
-         * The image to show as the avatar
-         */
-        src: {
-          type: String,
-          value: null
-        },
-
-        _computedInitials: {
-          type: String,
-          value: '',
-          computed: '_computeInitials(name, initials)'
-        }
-      },
-
-      _computeInitials: function(name, initials) {
+    class AshAvatar extends Polymer.Element {
+      static get is() {
+        return 'ash-avatar';
+      }
+      static get properties() {
+        return {
+          name: {
+            type: String,
+            value: null,
+            observer: '_nameChanged'
+          },
+          initials: {
+            type: String,
+            value: ''
+          },
+          icon: {
+            type: String,
+            value: null
+          },
+          src: {
+            type: String,
+            value: null
+          },
+          _computedInitials: {
+            type: String,
+            value: '',
+            computed: '_computeInitials(name, initials)'
+          }
+        };
+      }
+      _computeInitials(name, initials) {
         if (initials) {
           return initials;
         }
         if (name) {
           var words = name.split(' ');
-          return [words[0][0], words[1] ? words[1][0] : ''].join('');
+          return [
+            words[0][0],
+            words[1] ? words[1][0] : ''
+          ].join('');
         }
-      },
-
-      _nameChanged: function(name) {
+      }
+      _nameChanged(name) {
         if (name) {
-          this.title = name
+          this.title = name;
         } else {
           this.removeAttribute('title');
         }
-      },
-
-      _shouldShow: function(obj, name, icon, src) {
-        switch(obj) {
+      }
+      _shouldShow(obj, name, icon, src) {
+        switch (obj) {
           case 'text':
             return name && !icon && !src ? true : false;
           case 'icon':
@@ -198,6 +182,7 @@ Custom property | Description | Default
             return src ? true : false;
         }
       }
-    });
+    }
+    window.customElements.define(AshAvatar.is, AshAvatar);
   </script>
 </dom-module>
