@@ -1,9 +1,4 @@
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-image/iron-image.html">
-
-<!--
+/**
 Material design: [Imagery](https://material.io/guidelines/style/imagery.html)
 
 `ash-avatar` is an avatar element with fallbacks for an icon and the user initials. Shows an avatar,
@@ -60,10 +55,24 @@ Custom property | Description | Default
 `--ash-avatar-inner-border` | Mixin applied to the avatar inner border | `{}`
 
 @demo demo/index.html 
--->
+*/
+/*
+  FIXME(polymer-modulizer): the above comments were extracted
+  from HTML and may be out of place here. Review them and
+  then delete this comment!
+*/
 
-<dom-module id="ash-avatar">
-  <template>
+
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+import { html } from '@polymer/polymer/lib/utils/html-tag';
+import '@polymer/polymer/lib/elements/dom-if';
+import '@polymer/iron-image/iron-image';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-meta/iron-meta'
+
+class AshAvatar extends PolymerElement {
+  static get template() {
+    return html`
       <style>
         :host {
           width: var(--ash-avatar-width, 40px);
@@ -78,7 +87,7 @@ Custom property | Description | Default
           @apply --layout-relative;
           @apply --ash-avatar;
         }
-
+      
         :host::after {
           @apply --layout-fit;
           content: '';
@@ -87,7 +96,7 @@ Custom property | Description | Default
           pointer-events: none;
           @apply --ash-avatar-inner-border;
         }
-
+      
         #text {
           @apply --paper-font-common-base;
           text-transform: uppercase;
@@ -96,93 +105,90 @@ Custom property | Description | Default
           user-select: none;
           @apply --ash-avatar-text;
         }
-
+      
         iron-icon {
           width: var(--ash-avatar-icon-width, 24px);
           height: var(--ash-avatar-icon-height, 24px);
           color: var(--ash-avatar-icon-color, var(--ash-avatar-color));
           @apply --ash-avatar-icon;
         }
-
+      
         iron-image {
           width: var(--ash-avatar-image-width, 100%);
           height: var(--ash-avatar-image-height, 100%);
           @apply --ash-avatar-image;
         }
       </style>
+      
+      <template is="dom-if" if="[[_shouldShow('text', name, icon, src)]]">
+        <div id="text">[[_computedInitials]]</div>
+      </template>
+      <template is="dom-if" if="[[_shouldShow('icon', name, icon, src)]]">
+        <iron-icon id="icon" icon="[[icon]]"></iron-icon>
+      </template>
+      <template is="dom-if" if="[[_shouldShow('image', name, icon, src)]]">
+        <iron-image id="img" src="[[src]]" sizing="cover"></iron-image>
+      </template>
+`;
+  }
 
-    <template is="dom-if" if="[[_shouldShow('text', name, icon, src)]]">
-      <div id="text">[[_computedInitials]]</div>
-    </template>
-    <template is="dom-if" if="[[_shouldShow('icon', name, icon, src)]]">
-      <iron-icon id="icon" icon="[[icon]]"></iron-icon>
-    </template>
-    <template is="dom-if" if="[[_shouldShow('image', name, icon, src)]]">
-      <iron-image id="img" src="[[src]]" sizing="cover"></iron-image>
-    </template>
-  </template>
-
-  <script>
-    class AshAvatar extends Polymer.Element {
-      static get is() {
-        return 'ash-avatar';
+  static get is() {
+    return 'ash-avatar';
+  }
+  static get properties() {
+    return {
+      name: {
+        type: String,
+        value: null,
+        observer: '_nameChanged'
+      },
+      initials: {
+        type: String,
+        value: ''
+      },
+      icon: {
+        type: String,
+        value: null
+      },
+      src: {
+        type: String,
+        value: null
+      },
+      _computedInitials: {
+        type: String,
+        value: '',
+        computed: '_computeInitials(name, initials)'
       }
-      static get properties() {
-        return {
-          name: {
-            type: String,
-            value: null,
-            observer: '_nameChanged'
-          },
-          initials: {
-            type: String,
-            value: ''
-          },
-          icon: {
-            type: String,
-            value: null
-          },
-          src: {
-            type: String,
-            value: null
-          },
-          _computedInitials: {
-            type: String,
-            value: '',
-            computed: '_computeInitials(name, initials)'
-          }
-        };
-      }
-      _computeInitials(name, initials) {
-        if (initials) {
-          return initials;
-        }
-        if (name) {
-          var words = name.split(' ');
-          return [
-            words[0][0],
-            words[1] ? words[1][0] : ''
-          ].join('');
-        }
-      }
-      _nameChanged(name) {
-        if (name) {
-          this.title = name;
-        } else {
-          this.removeAttribute('title');
-        }
-      }
-      _shouldShow(obj, name, icon, src) {
-        switch (obj) {
-          case 'text':
-            return name && !icon && !src ? true : false;
-          case 'icon':
-            return icon && !src ? true : false;
-          case 'image':
-            return src ? true : false;
-        }
-      }
+    };
+  }
+  _computeInitials(name, initials) {
+    if (initials) {
+      return initials;
     }
-    window.customElements.define(AshAvatar.is, AshAvatar);
-  </script>
-</dom-module>
+    if (name) {
+      var words = name.split(' ');
+      return [
+        words[0][0],
+        words[1] ? words[1][0] : ''
+      ].join('');
+    }
+  }
+  _nameChanged(name) {
+    if (name) {
+      this.title = name;
+    } else {
+      this.removeAttribute('title');
+    }
+  }
+  _shouldShow(obj, name, icon, src) {
+    switch (obj) {
+      case 'text':
+        return name && !icon && !src ? true : false;
+      case 'icon':
+        return icon && !src ? true : false;
+      case 'image':
+        return src ? true : false;
+    }
+  }
+}
+window.customElements.define(AshAvatar.is, AshAvatar);

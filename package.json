@@ -1,0 +1,38 @@
+{
+  "description": "An avatar element with fallbacks for an icon and the user initials.",
+  "keywords": [
+    "avatar",
+    "paper-avatar",
+    "ash-avatar",
+    "gravatar"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tegola/ash-avatar.git"
+  },
+  "homepage": "https://github.com/tegola/ash-avatar",
+  "name": "@polymer/ash-avatar",
+  "version": "",
+  "resolutions": {
+    "inherits": "2.0.3",
+    "samsam": "1.1.3",
+    "supports-color": "3.1.2",
+    "type-detect": "1.0.0",
+    "@webcomponents/webcomponentsjs": "2.0.0-beta.2"
+  },
+  "main": "ash-avatar.js",
+  "author": "Alan Sprecacenere <alan@qreate.it>",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0",
+    "@polymer/iron-image": "^3.0.0-pre.18",
+    "@polymer/iron-icon": "^3.0.0-pre.18",
+    "@polymer/iron-flex-layout": "^3.0.0-pre.18",
+    "@polymer/iron-icons": "^3.0.0-pre.18"
+  },
+  "devDependencies": {
+    "@polymer/iron-demo-helpers": "^3.0.0-pre.18",
+    "wct-browser-legacy": "^0.0.1-pre.11",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "@polymer/iron-meta": "^3.0.0-pre.18"
+  }
+}
