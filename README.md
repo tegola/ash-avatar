@@ -1,14 +1,21 @@
 # \<ash-avatar\>
 
-Material design: [Imagery](https://material.io/guidelines/style/imagery.html)
 
-`ash-avatar` is an avatar element with fallbacks for an icon and the user initials. Shows an avatar, an icon, or just the user initials, (given that the user name is set). Initials can also be passed separately.
 
-Example:
+## Install the Polymer-CLI
 
-    <ash-avatar name="Jennifer Smith"></ash-avatar>
-    <ash-avatar src="https://randomuser.me/api/portraits/women/2.jpg"></ash-avatar>
-    <ash-avatar icon="social:person"></ash-avatar>
-    <ash-avatar name="Jennifer Smith" initials="J"></ash-avatar>
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
 
-[Demo page](https://tegola.github.io/ash-avatar/components/ash-avatar/)
+## Viewing Your Element
+
+```
+$ polymer serve
+```
+
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
